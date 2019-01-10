@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:id="@+id/addgroup" android:visible="true" >
+
+        <item android:id="@+id/share"
+            android:title="share"
+            android:visible="true"
+            app:showAsAction="always"
+            android:icon="@mipmap/ic_launcher_round"/>
+
+        <item android:id="@+id/add"
+            android:title="add"
+            android:visible="true"
+            app:showAsAction="always"
+            android:icon="@mipmap/ic_launcher_round"/>
+    </group>
+
+</menu>
