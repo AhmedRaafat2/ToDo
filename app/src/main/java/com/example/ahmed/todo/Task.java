@@ -13,12 +13,11 @@ public class Task implements Serializable {
     private String taskDetails, priority, taskDate, taskTime;
     private int id;
 
-    public Task(int id, String taskDetails, String taskDate, String taskTime, String priority) {
+    public Task(String taskDetails, String taskDate, String taskTime, String priority) {
         this.taskDetails = taskDetails;
         this.priority = priority;
         this.taskDate = taskDate;
         this.taskTime = taskTime;
-        this.id = id;
     }
 
     public String getTaskDetails() {

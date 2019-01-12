@@ -4,19 +4,16 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TimePicker;
-
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private FloatingActionButton fab;
     private ListView taskList;
@@ -32,11 +29,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         taskList = findViewById(R.id.toDoListItems);
 
-        tasks = new ArrayList<>();
-        tasks.add(new Task(1,"task1","low","18/01/2019","18:30"));
-        adapter = new TaskAdapter(this,tasks);
 
+        DbHelper helper = new DbHelper(this);
+        tasks = helper.getAllTasks();
+        adapter = new TaskAdapter(this,tasks);
         taskList.setAdapter(adapter);
+
+        taskList.setOnItemClickListener(this);
     }
 
     @Override
@@ -64,9 +63,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        Log.e("onClick","onClick");
         if(v.getId() == R.id.fab){
+
             Intent intent = new Intent(this,AddActivity.class);
             startActivity(intent);
         }
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Log.e("onItemClick","onItemClick");
+        Intent intent = new Intent(this,AddActivity.class);
+//        Task task = tasks.get(position);
+//        intent.putExtra("task",task);
+        startActivity(intent);
+    }
+
+
 }

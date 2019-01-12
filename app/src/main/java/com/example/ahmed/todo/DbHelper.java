@@ -2,8 +2,11 @@ package com.example.ahmed.todo;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "TasksDB";
@@ -41,13 +44,51 @@ public class DbHelper extends SQLiteOpenHelper {
     public void addToDo(Task task){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COULMN_ID,task.getId());
+
         values.put(COULMN_DETAILS,task.getTaskDetails());
         values.put(COULMN_DATE,task.getTaskDate());
         values.put(COULMN_TIME,task.getTaskTime());
         values.put(COULMN_PRIORITY,task.getPriority());
 
         db.insert(TABLE_NAME,null,values);
+        db.close();
+    }
+
+    public ArrayList<Task> getAllTasks(){
+        ArrayList<Task> tasks = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME,null);
+        while (cursor.moveToNext()){
+
+            Task task = new Task(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4));
+            tasks.add(task);
+        }
+        cursor.close();
+        db.close();
+        return tasks;
+    }
+
+    public void updateTask (Task task){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COULMN_ID,task.getId());
+        values.put(COULMN_DETAILS,task.getTaskDetails());
+        values.put(COULMN_DATE,task.getTaskDate());
+        values.put(COULMN_TIME,task.getTaskTime());
+        values.put(COULMN_PRIORITY,task.getPriority());
+
+        db.update(TABLE_NAME,values,COULMN_ID+"=?",new String[]{String.valueOf(task.getId())});
+        db.close();
+    }
+
+    public void deleteTask(int id){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_NAME,COULMN_ID+"=?",new String[]{String.valueOf(id)});
         db.close();
     }
 }
